@@ -4,7 +4,7 @@ from . import views
 from .views import RegisterUserView
 
 urlpatterns= [
-    path("",RegisterUserView.as_view(),name="index"),
+    path("createuser",RegisterUserView.as_view(),name="registeruser"),
     # path("login_view",views.login,name="login"),
     # path("logout_view",views.logout,name="logout")
 ]

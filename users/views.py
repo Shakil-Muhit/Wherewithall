@@ -2,29 +2,28 @@ from django.shortcuts import render
 from rest_framework import generics,status
 from rest_framework.response import Response
 
-from .serializers import RegisterUserSerializer
+from .serializers import UserSerializer
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm 
+from .models import Profile
 
 # Create your views here.
 class RegisterUserView(generics.CreateAPIView):
-    serializer_class= RegisterUserSerializer
+    serializer_class= UserSerializer
 
     def post(self, request, format= None):
         serializer= self.serializer_class(data= request.data)
         if serializer.is_valid():
             username= serializer.data.get('username')
             password= serializer.data.get('password')
-            # print(username)
-            # print(password)
-            form= UserCreationForm(request.POST)
             # user= User(username=username,password=password)
             user= User.objects.create_user(username=username,password=password)
             user.save()
-            if form.is_valid():
-                form.save()
+
+            profile= Profile(user= user)
+            profile.save()
         else : print("!!!")
-        return Response(RegisterUserSerializer(User(username=username,password=password)).data, status= status.HTTP_201_CREATED)
+        return Response(UserSerializer(User(username=username,password=password)).data, status= status.HTTP_201_CREATED)
     
 
 
