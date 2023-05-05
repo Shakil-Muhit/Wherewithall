@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics,status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
 
@@ -48,6 +49,13 @@ class LoginUserView(generics.CreateAPIView):
                 return Response(UserSerializer(User(username=username,password=password)).data, status= status.HTTP_200_OK)
             return Response({'message': 'invalid'}, status= status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+
+class LogoutUserView(APIView):
+    def post(self, request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        logout(request)
+        return Response({'message': 'Successfully logged out'}, status= status.HTTP_200_OK)
 
 def logoutView(request):
     if not request.user.is_authenticated:

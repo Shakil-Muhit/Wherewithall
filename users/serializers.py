@@ -12,5 +12,4 @@ class LoginSerializer(serializers.Serializer):
     password= serializers.CharField(max_length= 50)
 
 class LogoutSerializer(serializers.Serializer):
-    username= serializers.CharField(max_length= 50)
-    password= serializers.CharField(max_length= 50)
+    pass
