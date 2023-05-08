@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
 
-from .serializers import UserSerializer, LoginSerializer, LogoutSerializer
+from .serializers import UserSerializer, LoginSerializer, ProfileSerializer
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm 
@@ -62,6 +62,21 @@ def logoutView(request):
         return HttpResponse('Not logged in')
     logout(request)
     return HttpResponse('Successfully logged out')
+
+class GetProfile(APIView):
+    serializer_class= ProfileSerializer
+
+    def get(self, request, format= None):
+        username= request.GET.get('username')
+        if username != None:
+            user = User.objects.filter(username=username)
+            if len(user) > 0:
+                return Response(ProfileSerializer(user[0].profile).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+        
+
+
 
 def index(request):
     pass
