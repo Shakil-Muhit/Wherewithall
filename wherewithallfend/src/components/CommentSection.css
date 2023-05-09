@@ -1,0 +1,73 @@
+.commentSectionLayout{
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+
+    font-family: 'Quicksand', sans-serif;
+    
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.commentFeedLayout{
+    grid-column-start: 2;
+    grid-column-end: 4;
+    padding: 20px;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    background-color: white;
+
+}
+
+.followingLayout{
+    grid-column-start: 1;
+    grid-column-end: 2;
+    padding: 20px;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    position: fixed;
+}
+
+.trendingTagsLayout{
+    grid-row-start: 1;
+    grid-row-end: 2;
+    position: fixed;
+    background-color: white;
+    padding: 20px;
+    left: 1500px;
+    width: 300px;
+    height: 400px;
+    margin-right: 50px;
+    border: 1px solid white
+}
+
+.topContributorsLayout{
+    grid-row-start: 2;
+    grid-row-end: 3;
+    position: fixed;
+    left: 1500px;
+    padding: 20px;
+    background-color: white;
+    width: 300px;
+    height: 400px;
+    margin-top: 420px;
+}
+
+.tag{
+    margin-left: 95px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.btn{
+    outline: none;
+}
+
+.followingPeopleLayout{
+    margin-right: 110px;
+}

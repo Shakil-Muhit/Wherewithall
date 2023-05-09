@@ -1,0 +1,72 @@
+/* Split the screen in half */
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    top: 0;
+    padding-top: 50px;
+    margin-top: 0px;
+  }
+  
+  .left {
+    left: 0;
+    background-color: #41436a;
+  }
+
+  .left:hover{
+    background-color: black;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: white;
+  }
+  
+.right:hover{
+    background-color: azure;
+}
+
+  .title{
+    margin-top: 300px;
+    text-align: center;
+    font-size: 7.5em;
+  }
+
+  .textbelowtitle{
+    margin-top: 50px;
+    text-align: center;
+    font-size: 2em;
+  }
+
+  .loginText{
+    margin-top: 10px;
+    margin-bottom: 40px;
+
+  }
+  /* If you want the content centered horizontally and vertically */
+  .centered {
+    margin-top: 200px;
+    margin-left: 10px;
+  }
+
+  .upper{
+    height: 50px;
+    width: 100%;
+    background-color: black;
+  }
+
+  .textInForms{
+    margin-top: 10px;
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  .loginButton{
+    float: left;
+    margin-left: 120px;
+  }
+
+  .registerButton{
+    float:right;
+  }

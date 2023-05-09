@@ -1,0 +1,20 @@
+.postLayout{
+    margin-bottom: 20px;
+}
+
+a:link{
+    text-decoration: none;
+    color: black;
+    text-decoration-color: black;
+}
+
+
+
+a:hover{
+    text-decoration: underline;
+}
+
+.postFooterLayout{
+    height: 70px;
+    
+}
