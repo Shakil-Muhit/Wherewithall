@@ -5,10 +5,12 @@ from rest_framework.response import Response
 from django.http import HttpResponse
 
 from .serializers import UserSerializer, LoginSerializer, ProfileSerializer
+from .serializers import UserPostsSerializer
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm 
 from .models import Profile
+from posts.models import Post
 
 # Create your views here.
 class RegisterUserView(generics.CreateAPIView):
@@ -75,7 +77,18 @@ class GetProfile(APIView):
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
         
+class GetUserPosts(APIView):
+    serializer_class= UserPostsSerializer
 
+    def get(self, request, format=None):
+        username= request.GET.get('username')
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                posts= Post.objects.filter(author= user[0])
+                return Response(UserPostsSerializer(posts=posts), status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
 
 
 def index(request):
