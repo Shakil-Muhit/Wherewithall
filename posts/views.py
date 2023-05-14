@@ -32,6 +32,36 @@ class AddPostView(generics.CreateAPIView):
 
             return Response(PostSerializer(post).data, status= status.HTTP_201_CREATED)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class UpdatePostView(generics.CreateAPIView):
+    serializer_class= AddPostSerializer
+
+    def post(self, request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+
+        body= request.data.get('body')
+        postid= request.data.get('post_id')
+        posts = Post.objects.filter(id=postid)
+        post= posts[0]
+        post.body= body
+        post.save(update_fields=['body'])
+
+        return Response(PostSerializer(post).data, status= status.HTTP_201_CREATED)
+    
+class DeletePostView(generics.CreateAPIView):
+    serializer_class= AddPostSerializer
+
+    def post(self, request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+
+        postid= request.data.get('post_id')
+        posts = Post.objects.filter(id=postid)
+        post= posts[0]
+        post.delete()
+
+        return Response({'message':'successfully deleted'}, status= status.HTTP_201_CREATED)
 
 class AddCommentView(generics.CreateAPIView):
     serializer_class= AddCommentSerializer
@@ -52,6 +82,20 @@ class AddCommentView(generics.CreateAPIView):
                 return Response(AddCommentSerializer(comment).data, status= status.HTTP_201_CREATED)
             return Response({'message':'Post does not exist'}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class DeleteCommentView(generics.CreateAPIView):
+    serializer_class= AddCommentSerializer
+
+    def post(self, request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+
+        commentid= request.data.get('comment_id')
+        comments = Comment.objects.filter(id=commentid)
+        comment= comments[0]
+        comment.delete()
+
+        return Response({'message':'successfully deleted'}, status= status.HTTP_201_CREATED)
     
 class AddReplyView(generics.CreateAPIView):
     serializer_class= AddReplySerializer

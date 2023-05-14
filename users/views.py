@@ -83,6 +83,23 @@ class FollowUser(generics.CreateAPIView):
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
     
+class UnfollowUser(generics.CreateAPIView):
+    serializer_class= UserSerializer
+    def post(self,request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        username= request.data.get('username')
+        if username is not None:
+            users= User.objects.filter(username=username)
+            if len(users)>0:
+                user= users[0]
+                currentuser= request.user
+                profile= currentuser.profile
+                profile.following.remove(user)
+                return Response({'message': 'Successfully unfollowed '+username}, status= status.HTTP_201_CREATED)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+    
 class BanUserFromCommenting(generics.CreateAPIView):
     serializer_class= UserSerializer
 
@@ -180,6 +197,49 @@ class GetCurrentUserPosts(APIView):
             if len(user)>0:
                 posts= Post.objects.filter(author= user[0])
                 return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class GetCurrentUserVote(APIView):
+    serializer_class= PostSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                postid= request.GET.get('post_id')
+                posts= Post.objects.filter(id=postid)
+                ret= 0
+                if user in posts[0].upvotes.all():
+                    ret=1
+                elif user in posts[0].downvotes.all():
+                    ret=2
+                return Response({'vote_status': ret}, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
+class GetCurrentUserFollowing(APIView):
+    serializer_class= PostSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+                return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                username2= request.GET.get('username')
+                users= User.objects.filter(username=username2)
+                if len(users)>0:
+                    other_user= users[0]
+                    ret= False
+                    if other_user in user[0].profile.following.all():
+                        ret= True
+                    return Response({'follow_status': ret}, status= status.HTTP_200_OK)
+                return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
 
