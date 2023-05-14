@@ -66,6 +66,12 @@ def logoutView(request):
     logout(request)
     return HttpResponse('Successfully logged out')
 
+class GetCurrentUser(APIView):
+    def get(self,request, format= None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        return Response({'username': request.user.username}, status= status.HTTP_200_OK)
+    
 class GetProfile(APIView):
     serializer_class= ProfileSerializer
 
