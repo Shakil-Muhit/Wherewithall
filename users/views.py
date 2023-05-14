@@ -97,6 +97,20 @@ class GetUserPosts(APIView):
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
 
+class GetCurrentUserPosts(APIView):
+    serializer_class= PostSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                posts= Post.objects.filter(author= user[0])
+                return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
 
 def index(request):
     pass
