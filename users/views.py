@@ -66,6 +66,77 @@ def logoutView(request):
     logout(request)
     return HttpResponse('Successfully logged out')
 
+class FollowUser(generics.CreateAPIView):
+    serializer_class= UserSerializer
+    def post(self,request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        username= request.data.get('username')
+        if username is not None:
+            users= User.objects.filter(username=username)
+            if len(users)>0:
+                user= users[0]
+                currentuser= request.user
+                profile= currentuser.profile
+                profile.following.add(user)
+                return Response({'message': 'Successfully followed '+username}, status= status.HTTP_201_CREATED)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class BanUserFromCommenting(generics.CreateAPIView):
+    serializer_class= UserSerializer
+
+    def post(self,request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        username= request.data.get('username')
+        if username is not None:
+            users= User.objects.filter(username=username)
+            if len(users)>0:
+                user= users[0]
+                profile= user.profile
+                profile.ban_status= 1
+                profile.save(update_fields= ['ban_status'])
+                return Response(ProfileSerializer(profile).data, status= status.HTTP_201_CREATED)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class BanUserFromPosting(generics.CreateAPIView):
+    serializer_class= UserSerializer
+
+    def post(self,request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        username= request.data.get('username')
+        if username is not None:
+            users= User.objects.filter(username=username)
+            if len(users)>0:
+                user= users[0]
+                profile= user.profile
+                profile.ban_status= 2
+                profile.save(update_fields= ['ban_status'])
+                return Response(ProfileSerializer(profile).data, status= status.HTTP_201_CREATED)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+
+class UnbanUser(generics.CreateAPIView):
+    serializer_class= UserSerializer
+
+    def post(self,request, format= None):
+        if not request.user.is_authenticated:
+            return Response({'message':'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        username= request.data.get('username')
+        if username is not None:
+            users= User.objects.filter(username=username)
+            if len(users)>0:
+                user= users[0]
+                profile= user.profile
+                profile.ban_status= 0
+                profile.save(update_fields= ['ban_status'])
+                return Response(ProfileSerializer(profile).data, status= status.HTTP_201_CREATED)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+
 class GetCurrentUser(APIView):
     def get(self,request, format= None):
         if not request.user.is_authenticated:
@@ -111,6 +182,22 @@ class GetCurrentUserPosts(APIView):
                 return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
+class GetCommunityPosts(APIView):
+    serializer_class= PostSerializer
+
+    def get(self, request, format=None):
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in')
+        username= request.user.username
+        if username != None:
+            user= User.objects.filter(username=username)
+            if len(user)>0:
+                posts= Post.objects.filter(author__in= user[0].profile.following.all() )
+                return Response(PostSerializer(posts,many= True).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
 
 def index(request):
     pass

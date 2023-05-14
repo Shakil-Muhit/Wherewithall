@@ -94,6 +94,42 @@ class UpvotePost(generics.CreateAPIView):
             return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
 
+class ReportPost(generics.CreateAPIView):
+    serializer_class= VoteSerializer
+
+    def post(self, request, format=None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        
+        postid= request.data.get('id')
+        if postid != None:
+            posts= Post.objects.filter(id= postid)
+            if len(posts)>0:
+                post= posts[0]
+                post.is_reported= True
+                post.save()
+                return Response(VoteSerializer(post).data,status= status.HTTP_200_OK)
+            return Response({'Post Not Found': 'Post does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
+class ReportComment(generics.CreateAPIView):
+    serializer_class= CommentSerializer
+
+    def post(self, request, format=None):
+        if not request.user.is_authenticated:
+            return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
+        
+        commentid= request.data.filter('id')
+        if commentid != None:
+            comments= Post.objects.get(id= commentid)
+            if len(comments)>0:
+                comment= comments[0]
+                comment.is_reported= True
+                comment.save(update_fields=['is_reported'])
+                return Response(CommentSerializer(comment).data,status= status.HTTP_200_OK)
+            return Response({'Comment Not Found': 'Comment does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
 class DownvotePost(generics.CreateAPIView):
     serializer_class= VoteSerializer
 
@@ -126,6 +162,20 @@ class GetPost(APIView):
                 return Response(PostSerializer(post[0]).data, status= status.HTTP_200_OK)
             return Response({'Post Not Found': 'Post does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+    
+class GetReportedPosts(APIView):
+    serializer_class= PostSerializer
+
+    def get(self,request,format=None):
+        posts= Post.objects.filter(is_reported= True)
+        return Response(PostSerializer(posts,many=True).data, status= status.HTTP_200_OK)
+
+class GetReportedComments(APIView):
+    serializer_class= CommentSerializer
+
+    def get(self,request,format=None):
+        comments= Comment.objects.filter(is_reported= True)
+        return Response(CommentSerializer(comments,many=True).data, status= status.HTTP_200_OK)
 
 class GetComment(APIView):
     serializer_class= CommentSerializer
