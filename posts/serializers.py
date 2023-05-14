@@ -25,3 +25,9 @@ class AddCommentSerializer(serializers.Serializer):
 
 class AddReplySerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)
+
+class VoteSerializer(serializers.ModelSerializer):
+    id= serializers.IntegerField()
+    class Meta:
+        model= Post
+        fields= ('id',)

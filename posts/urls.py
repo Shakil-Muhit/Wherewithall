@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import PostView, AddPostView, AddCommentView, AddReplyView
+from .views import PostView, AddPostView, AddCommentView, AddReplyView, UpvotePost, DownvotePost
 from .views import GetPost, GetComment, GetReply
 
 urlpatterns= [
@@ -12,4 +12,6 @@ urlpatterns= [
     path("getpost", GetPost.as_view(), name="get_post"),
     path("getcomment",GetComment.as_view(), name="get_comment"),
     path("getreply",GetReply.as_view(),name="get_reply"),
+    path("upvotepost", UpvotePost.as_view(),name="upvote_post"),
+    path("downvotepost", DownvotePost.as_view(),name="downvote_post"),
 ]
