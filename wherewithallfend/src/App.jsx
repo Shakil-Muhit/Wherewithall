@@ -6,7 +6,7 @@ import NavBar from './components/NavBar'
 import Community from './components/Community'
 import Profile from './components/Profile'
 import CommentsSection from './components/CommentsSection'
-
+import SearchSection from "./components/SearchSection"
 
 
 export default function App() {
@@ -19,6 +19,7 @@ export default function App() {
         <Route path = "/community" element = {<div><NavBar/><Community/></div>}/>
         <Route path = "/profile" element = {<div><NavBar/><Profile/></div>}/>
         <Route path = "/comments" element = {<div><NavBar/><CommentsSection/></div>}></Route>
+        <Route path = "/search" element = {<div><NavBar/><SearchSection/></div>}></Route>
       </Routes>
     </BrowserRouter>
   )

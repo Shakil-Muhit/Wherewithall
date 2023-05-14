@@ -5,6 +5,8 @@ import {BsThreeDotsVertical, BsReplyFill} from 'react-icons/bs'
 import { Button } from '@mui/material'
 import { TextFieldClasses,TextField } from '@mui/material'
 import { useState } from 'react'
+import CommentPopUp from './CommentPopUp'
+
 export default function Comment() {
     const [replyToComment, setReply] = useState("NoReplyYet")
   
@@ -18,7 +20,7 @@ export default function Comment() {
                 
                 <div style = {{float: "right", marginRight: "0px"}}>
                     <Button>
-                        <BsThreeDotsVertical  size= {15}/>
+                        <CommentPopUp/>
                     </Button>
                 </div>
             </div>
@@ -49,7 +51,7 @@ export default function Comment() {
                 
                 <div style = {{float: "right", marginRight: "0px"}}>
                     <Button>
-                        <BsThreeDotsVertical  size= {15}/>
+                        <CommentPopUp/>
                     </Button>
                 </div>
             </div>

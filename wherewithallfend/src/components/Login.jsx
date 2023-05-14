@@ -14,7 +14,31 @@ export default function Login() {
     {
         console.log(userName)
         console.log(pass)
-        nav("/community")
+
+        const postLoginData = {
+            method: "POST",
+            headers: {"Content-Type" : "application/json"},
+      
+            body: JSON.stringify({
+              username: userName,
+              password: pass
+            })
+          };
+      
+          fetch("/api/users/login", postLoginData).then((response) => {
+            console.log(response.status)
+            if(response.status === 200 || response.status === 201)
+            {
+                return response.json()
+            }
+            else 
+            {
+                throw new Error("Something went wrong")
+            }
+          }).then((data) => {
+            console.log(data)
+            nav("/community")
+        }).catch((error) => console.log(error));
     }
 
     return (

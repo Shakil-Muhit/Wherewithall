@@ -1,10 +1,10 @@
 import React from 'react'
-import './Profile.css'
-import CommentsSection from './CommentsSection'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import Post from './Post'
+import {Tab, Tabs } from '@mui/material'
+import Box from '@mui/material'
+import SearchTabs from './SearchTabs'
 
-export default function Profile() {
+export default function SearchSection() {
   return (
     <div className='layout'>
       
@@ -42,48 +42,7 @@ export default function Profile() {
       
       
       <div className='feedLayout'>
-          <div className='profileLayout'>
-      
-            <div>
-              <div class = "Card">
-                <div class = "card-title">
-                   <h1 style={{marginLeft: "300px"}}>Doraemon</h1>
-                </div>
-
-              <div class = "card-body">
-                <div style={{marginBottom: "50px",marginTop: "20px", marginRight: "10px"}}>
-                  <div style={{float: "left"}}>
-                     <h6 style={{fontWeight: "bold"}}>Profession: </h6>
-                  </div>
-
-                  <div style={{marginLeft: "100px"}}>
-                      <h6>Robot</h6>
-                  </div>
-                </div>
-
-               <div>
-                  <div style={{float: "left", marginBottom: "50px"}}>
-                     <h6 style={{fontWeight: "bold"}}>Investments: </h6>
-                  
-                    <div style={{marginTop: "20px"}}>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat neque quam possimus ab expedita quidem minus, nesciunt vel sed. Ea earum nostrum reprehenderit corrupti alias architecto magni dicta illo maiores.</p>
-                    </div>
-
-                  </div>
-               </div>
-
-              </div>
-          </div>
-         </div>
-
-        <div>
-          <div style={{marginBottom: "50px"}}>
-            <h3>Contributions</h3>
-          </div>
-          <Post/>
-        </div>
-
-      </div>
+            <SearchTabs/>  
       </div>
 
       <div className='trendingTagsLayout'>

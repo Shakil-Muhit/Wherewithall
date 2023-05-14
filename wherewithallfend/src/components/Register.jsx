@@ -1,6 +1,6 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {useNavigate} from 'react-router-dom'
+import {json, useNavigate} from 'react-router-dom'
 import './Register.css'
 import {useState} from 'react'
 export default function Register() {
@@ -23,6 +23,17 @@ export default function Register() {
     console.log(masterKey)
 
     //navigate("/login")
+    const postRegisterData = {
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+
+      body: JSON.stringify({
+        username: name,
+        password: password
+      })
+    };
+
+    fetch("/api/users/createuser", postRegisterData).then((response) => response.json()).then((data) => console.log(data));
   }
   return (
     <div>

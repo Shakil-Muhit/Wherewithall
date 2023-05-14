@@ -8,6 +8,7 @@ import {BiCommentDetail} from 'react-icons/bi'
 import {BsThreeDotsVertical, BsReplyFill} from 'react-icons/bs'
 import { TextFieldClasses,TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import PostPopUp from './PostPopUp'
 
 export default function Post() {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Post() {
                 
                 <div style = {{float: "right", marginRight: "0px"}}>
                     <Button>
-                        <BsThreeDotsVertical  size= {20}/>
+                        <PostPopUp/>
                     </Button>
                 </div>
                 
