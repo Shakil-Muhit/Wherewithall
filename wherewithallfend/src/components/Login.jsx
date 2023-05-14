@@ -36,7 +36,6 @@ export default function Login() {
                 throw new Error("Something went wrong")
             }
           }).then((data) => {
-            console.log(data)
             nav("/community")
         }).catch((error) => console.log(error));
     }

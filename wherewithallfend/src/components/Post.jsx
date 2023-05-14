@@ -10,16 +10,16 @@ import { TextFieldClasses,TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PostPopUp from './PostPopUp'
 
-export default function Post() {
+export default function Post(props) {
     const navigate = useNavigate();
     const[userComment, setComment] = useState("NoCommentYet")
-
+    
     return (
     <div className='postLayout'>
         <div class = "card rounded">
             <div class = "card-header border-0" style = {{marginTop : "15px",fontWeight:"bold", backgroundColor: "white"}}>
                 <div style={{float : "left"}}>
-                    <a href = "/profile" className='usernameLayout'>doraemon</a>
+                    <a href = "/profile" className='usernameLayout'>{props.author}</a>
                 </div>
                 
                 <div style = {{float: "right", marginRight: "0px"}}>
@@ -32,7 +32,7 @@ export default function Post() {
 
             
             <div class = "card-body">
-                <p class = "card-text" style = {{fontFamily: "cursive"}}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea excepturi consectetur reiciendis sed possimus blanditiis, numquam alias consequuntur aut iure amet mollitia! Nobis voluptas provident labore enim nihil harum quisquam!</p>
+                <p class = "card-text" style = {{fontFamily: "cursive"}}>{props.body}</p>
             </div>
 
             <div style={{}}>
@@ -67,6 +67,7 @@ export default function Post() {
                     </div>
             </div>
         </div>
+        
     </div>
   )
 }

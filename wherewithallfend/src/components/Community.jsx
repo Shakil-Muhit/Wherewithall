@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Community.css'
 import Post from './Post'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -7,7 +7,27 @@ import { BsReplyFill } from 'react-icons/bs'
 import { Button } from '@mui/material'
 import {CgNotes} from 'react-icons/cg'
 import MakePost from './MakePost'
+import { useEffect } from 'react'
+
 export default function Community() {
+  const [allposts, setAllPosts] = useState([])
+  const arr = []
+  useEffect(() => {
+      console.log("abiaudaihd")
+      fetch("/api/users/getcurrentuserposts").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            // for(let i = 0; i < data.length; i++)
+            // {
+            //   setAllPosts([...allposts, data[i]])
+            //   console.log(allposts)
+            // }
+            setAllPosts([...allposts, data])
+            console.log(allposts)
+        })
+  }, [])
+  if(allposts.length > 0)
+  {
   return (
     <div className='layout'>
       
@@ -47,13 +67,12 @@ export default function Community() {
       <div className='feedLayout'>
         
         <MakePost/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
-        <Post/>
         
+        <div>
+              {allposts[0].map((postdetails) => (
+              <Post author = {postdetails.author} body = {postdetails.body}/>
+            ))}
+        </div>
         
         
       </div>
@@ -66,7 +85,11 @@ export default function Community() {
 
           <div class = "card-body">
             <div className='tag'>
-              <button class="btn default">Tag 1</button>
+              <button class="btn default" onClick={() => {
+                console.log("ahgwdigbaiud")
+                console.log(allposts)
+                console.log(allposts[0])
+              }}>Tag 1</button>
             </div>
             
             <div className='tag'>
@@ -123,4 +146,5 @@ export default function Community() {
       </div>
     </div>
   )
+}
 }
