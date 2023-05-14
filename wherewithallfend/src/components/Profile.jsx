@@ -3,8 +3,23 @@ import './Profile.css'
 import CommentsSection from './CommentsSection'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Post from './Post'
+import { useEffect,useState } from 'react'
 
 export default function Profile() {
+  const [allposts, setAllPosts] = useState([])
+  const arr = []
+  useEffect(() => {
+      console.log("abiaudaihd")
+      fetch("/api/users/getcurrentuserposts").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            setAllPosts([...allposts, data])
+            console.log(allposts)
+        })
+  }, [])
+
+  if(allposts.length > 0)
+  {
   return (
     <div className='layout'>
       
@@ -80,7 +95,9 @@ export default function Profile() {
           <div style={{marginBottom: "50px"}}>
             <h3>Contributions</h3>
           </div>
-          <Post/>
+          {allposts[0].map((postdetails) => (
+              <Post author = {postdetails.author} body = {postdetails.body}/>
+            ))}
         </div>
 
       </div>
@@ -151,4 +168,5 @@ export default function Profile() {
       </div>
     </div>
   )
+}
 }

@@ -14,14 +14,9 @@ export default function Community() {
   const arr = []
   useEffect(() => {
       console.log("abiaudaihd")
-      fetch("/api/users/getcurrentuserposts").then((response) => {
+      fetch("/api/users/getcommunityposts").then((response) => {
         console.log(response.status)
         return response.json()}).then((data) => {
-            // for(let i = 0; i < data.length; i++)
-            // {
-            //   setAllPosts([...allposts, data[i]])
-            //   console.log(allposts)
-            // }
             setAllPosts([...allposts, data])
             console.log(allposts)
         })
