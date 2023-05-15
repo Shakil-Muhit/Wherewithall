@@ -158,7 +158,8 @@ class GetCurrentUser(APIView):
     def get(self,request, format= None):
         if not request.user.is_authenticated:
             return HttpResponse('Not logged in')
-        return Response({'username': request.user.username}, status= status.HTTP_200_OK)
+        profile= request.user.profile
+        return Response(ProfileSerializer(profile).data, status= status.HTTP_200_OK)
     
 class GetProfile(APIView):
     serializer_class= ProfileSerializer
@@ -167,6 +168,18 @@ class GetProfile(APIView):
         username= request.GET.get('username')
         if username != None:
             user = User.objects.filter(username=username)
+            if len(user) > 0:
+                return Response(ProfileSerializer(user[0].profile).data, status= status.HTTP_200_OK)
+            return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
+        return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
+
+class GetUsername(APIView):
+    serializer_class= ProfileSerializer
+
+    def get(self, request, format= None):
+        username= request.GET.get('id')
+        if username != None:
+            user = User.objects.filter(id=id)
             if len(user) > 0:
                 return Response(ProfileSerializer(user[0].profile).data, status= status.HTTP_200_OK)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
