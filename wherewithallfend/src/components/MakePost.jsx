@@ -5,8 +5,21 @@ import { BsReplyFill } from 'react-icons/bs'
 import { Button } from '@mui/material'
 import {CgNotes} from 'react-icons/cg'
 export default function MakePost() {
-  const[postText, setPostText] = useState("NothingWrittenYet")
+  const[postText, setPostText] = useState("")
   
+  const makePost = () => {
+      const postData = {
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+
+      body: JSON.stringify({
+        body: postText,
+      })
+    };
+
+    fetch("api/posts/addpost", postData).then((response) => response.json()).then((data) => console.log(data));
+  }
+
   return (
     <div>
       <div>
@@ -17,7 +30,7 @@ export default function MakePost() {
                             </div>
                             
                             <div style = {{float: "right", marginTop: "20px", marginBottom: "20px"}}>
-                                <Button onClick={() => {console.log(postText)}}>
+                                <Button onClick={makePost}>
                                     <CgNotes size = {35}/>
                                 </Button>
                             </div>

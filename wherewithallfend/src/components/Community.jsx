@@ -11,17 +11,26 @@ import { useEffect } from 'react'
 
 export default function Community() {
   const [allposts, setAllPosts] = useState([])
-  const arr = []
+  const[allfollowing, setAllFollowing] = useState([])
+
   useEffect(() => {
       console.log("abiaudaihd")
       fetch("/api/users/getcommunityposts").then((response) => {
         console.log(response.status)
         return response.json()}).then((data) => {
             setAllPosts([...allposts, data])
-            console.log(allposts)
+            // console.log(allposts)
+        })
+
+      fetch("/api/users/getcurrentuser").then((response) => {
+        console.log(response.status)
+        return response.json()}).then((data) => {
+            setAllFollowing([...allfollowing, data.following])
+            console.log(data)
         })
   }, [])
-  if(allposts.length > 0)
+
+  if(allposts.length > 0 && allfollowing.length > 0)
   {
   return (
     <div className='layout'>
@@ -33,26 +42,11 @@ export default function Community() {
             </div>
 
             <div class = "card-body">
+            {allfollowing[0].map((element) => (
               <div className='tag'>
-                <a href = "/profile" className='followingPeopleLayout'>doraemon</a>
-              </div>
-              
-              <div className='tag'>
-              <a href = "/profile" className='followingPeopleLayout'>doraemon</a>
-              </div>
-
-              <div className='tag'>
-              <a href = "/profile" className='followingPeopleLayout'>doraemon</a>
-              </div>
-
-              <div className='tag'>
-              <a href = "/profile" className='followingPeopleLayout'>doraemon</a>
-              </div>
-
-              <div className='tag'>
-              <a href = "/profile" className='followingPeopleLayout'>doraemon</a>
-              </div>
-
+              <a href = "" className='followingPeopleLayout'>{element}</a>
+            </div>
+            ))}
             </div>
         </div>
       </div>
@@ -65,7 +59,7 @@ export default function Community() {
         
         <div>
               {allposts[0].map((postdetails) => (
-              <Post author = {postdetails.author} body = {postdetails.body}/>
+              <Post author = {postdetails.author} body = {postdetails.body} id = {postdetails.id}/>
             ))}
         </div>
         
@@ -82,8 +76,8 @@ export default function Community() {
             <div className='tag'>
               <button class="btn default" onClick={() => {
                 console.log("ahgwdigbaiud")
-                console.log(allposts)
-                console.log(allposts[0])
+                console.log(allfollowing)
+                console.log(allfollowing[0])
               }}>Tag 1</button>
             </div>
             

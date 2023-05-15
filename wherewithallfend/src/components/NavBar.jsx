@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SearchBar from './SearchBar';
 import React from 'react';
-
+import { Button } from '@mui/material';
 const NavBar = () => {
   return (
     <Navbar bg="dark" variant="dark" position="sticky">
@@ -20,6 +20,7 @@ const NavBar = () => {
         <Container style = {{marginLeft: "1200px"}}>
           <SearchBar/>
         </Container>
+
       </Navbar>
   )
 }

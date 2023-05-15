@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card'
 import { Button } from '@mui/material'
@@ -13,6 +13,15 @@ import PostPopUp from './PostPopUp'
 export default function Post(props) {
     const navigate = useNavigate();
     const[userComment, setComment] = useState("NoCommentYet")
+    const [name, SetName] = useState("")
+
+    // useEffect(() => {
+    //     fetch("/api/users/getcommunityposts").then((response) => {
+    //         console.log(response.status)
+    //         return response.json()}).then((data) => {
+    //             setAllPosts([...allposts, data])
+    //         })
+    // })
     
     return (
     <div className='postLayout'>
