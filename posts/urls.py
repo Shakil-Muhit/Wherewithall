@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 from .views import PostView, AddPostView, AddCommentView, AddReplyView, UpvotePost, DownvotePost
 from .views import GetPost, GetComment, GetReply, GetReportedPosts, GetReportedComments
-from .views import ReportPost, ReportComment ,UpdatePostView, DeleteCommentView, DeletePostView
+from .views import ReportPost, ReportComment ,UpdatePostView, DeleteCommentView, DeletePostView, GetPostComments, GetCommentReplies
 
 urlpatterns= [
     path("allposts",PostView.as_view(),name="posts"),
@@ -22,4 +22,6 @@ urlpatterns= [
     path("downvotepost", DownvotePost.as_view(),name="downvote_post"),
     path("reportpost", ReportPost.as_view(), name="report_post"),
     path("reportcomment",ReportComment.as_view(), name="report_comment"),
+    path("getpostcomments",GetPostComments.as_view(), name="post_comment"),
+    path("getcommentreplies",GetCommentReplies.as_view(), name="comment_replies")
 ]

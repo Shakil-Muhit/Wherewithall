@@ -58,11 +58,14 @@ class DeletePostView(generics.CreateAPIView):
             return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
 
         postid= request.data.get('post_id')
+        print(postid)
         posts = Post.objects.filter(id=postid)
-        post= posts[0]
-        post.delete()
+        if(len(posts) > 0):
+            post= posts[0]
+            post.delete()
 
-        return Response({'message':'successfully deleted'}, status= status.HTTP_201_CREATED)
+            return Response({'message':'successfully deleted'}, status= status.HTTP_201_CREATED)
+        return Response({'message':'successfully not deleted'}, status= status.HTTP_201_CREATED)
 
 class AddCommentView(generics.CreateAPIView):
     serializer_class= AddCommentSerializer
@@ -107,14 +110,14 @@ class AddReplyView(generics.CreateAPIView):
         serializer= self.serializer_class(data= request.data)
         if serializer.is_valid():
             commentid= request.data.get('comment_id')
-            commentList= Post.objects.filter(id=commentid)
+            commentList= Comment.objects.filter(id=commentid)
             if len(commentList)>0 :
                 comment= commentList[0]
                 body= request.data.get('body')
-                reply= Reply(author= request.user, comment= comment, body= body)
+                reply= Reply(author= request.user, comment= comment, body= body, authorname = request.user.username)
                 reply.save()
 
-                return Response(AddCommentSerializer(comment).data, status= status.HTTP_201_CREATED)
+                return Response(AddReplySerializer(reply).data, status= status.HTTP_201_CREATED)
             return Response({'message':'Comment does not exist'}, status= status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
     
@@ -251,9 +254,9 @@ class GetPostComments(APIView):
     def get(self, request, format=None):
         postid= request.GET.get('post_id')
         if postid != None:
-            post= Post.objects.all(id=postid)
+            post= Post.objects.filter(id=postid)
             if len(post)>0:
-                comments= Comment.objects.all(post=post[0])
+                comments= Comment.objects.filter(post=post[0])
                 return Response(CommentSerializer(comments,many= True).data, status= status.HTTP_200_OK)
             return Response({'message': 'Post does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'message':'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)
@@ -262,9 +265,9 @@ class GetCommentReplies(APIView):
     def get(self,request,format=None):
         commentid= request.GET.get('comment_id')
         if commentid != None:
-            comment= Comment.objects.all(id=commentid)
+            comment= Comment.objects.filter(id=commentid)
             if len(comment)>0:
-                replies= Reply.objects.all(comment=comment[0])
+                replies= Reply.objects.filter(comment=comment[0])
                 return Response(ReplySerializer(replies,many= True).data, status= status.HTTP_200_OK)
             return Response({'message': 'Comment does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'message':'Invalid input'}, status= status.HTTP_400_BAD_REQUEST)

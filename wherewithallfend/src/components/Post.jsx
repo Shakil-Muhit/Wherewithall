@@ -10,30 +10,48 @@ import { TextFieldClasses,TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PostPopUp from './PostPopUp'
 
+
 export default function Post(props) {
     const navigate = useNavigate();
-    const[userComment, setComment] = useState("NoCommentYet")
+    const[userComment, setComment] = useState("")
     const [name, SetName] = useState("")
 
-    // useEffect(() => {
-    //     fetch("/api/users/getcommunityposts").then((response) => {
-    //         console.log(response.status)
-    //         return response.json()}).then((data) => {
-    //             setAllPosts([...allposts, data])
-    //         })
-    // })
+    useEffect(() => {
+        fetch("/api/users/getusername?" + "id=" + props.author).then((response) => {
+            console.log(response.status)
+            return response.json()}).then((data) => {
+                SetName(data.name)
+            })
+            console.log(props.author)
+    })
+
+    const makeComment = () => {
+        const postComment = {
+        method: "POST",
+        headers: {"Content-Type" : "application/json"},
+  
+        body: JSON.stringify({
+          body: userComment,
+          post_id: props.id,
+        })
+      };
+  
+      fetch("api/posts/addcomment", postComment).then((response) => response.json()).then((data) => console.log(data));
+    }
     
+    if(name.length > 0)
+    {
     return (
     <div className='postLayout'>
         <div class = "card rounded">
             <div class = "card-header border-0" style = {{marginTop : "15px",fontWeight:"bold", backgroundColor: "white"}}>
                 <div style={{float : "left"}}>
-                    <a href = "/profile" className='usernameLayout'>{props.author}</a>
+                    <a href = "" className='usernameLayout'>{name}</a>
                 </div>
                 
                 <div style = {{float: "right", marginRight: "0px"}}>
                     <Button>
-                        <PostPopUp/>
+                        <PostPopUp pid = {props.id} author = {props.author}/>
                     </Button>
                 </div>
                 
@@ -58,7 +76,7 @@ export default function Post(props) {
                 </div>
 
                 <div style = {{marginTop: "15px",float: "right", marginBottom: "10px"}}>
-                    <Button onClick={() => {console.log("Pressed");navigate("/comments")}}>
+                    <Button onClick={() => {console.log("Pressed");navigate("/comments", {state:{id:props.id}})}}>
                         <BiCommentDetail size= {20}/>
                     </Button>
                 </div>
@@ -70,7 +88,7 @@ export default function Post(props) {
                     </div>
                     
                     <div style = {{float: "right"}}>
-                        <Button onClick={() => {console.log(userComment)}}>
+                        <Button onClick={makeComment}>
                             <BsReplyFill size = {35}/>
                         </Button>
                     </div>
@@ -79,4 +97,5 @@ export default function Post(props) {
         
     </div>
   )
+}
 }

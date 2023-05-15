@@ -74,27 +74,23 @@ export default function Community() {
 
           <div class = "card-body">
             <div className='tag'>
-              <button class="btn default" onClick={() => {
-                console.log("ahgwdigbaiud")
-                console.log(allfollowing)
-                console.log(allfollowing[0])
-              }}>Tag 1</button>
+              <button class="btn default">Farming</button>
             </div>
             
             <div className='tag'>
-              <button class="btn default">Tag 1</button>
+              <button class="btn default">industry</button>
             </div>
 
             <div className='tag'>
-              <button class="btn default">Tag 1</button>
+              <button class="btn default">Vehicles</button>
             </div>
 
             <div className='tag'>
-              <button class="btn default">Tag 1</button>
+              <button class="btn default">Apple</button>
             </div>
 
             <div className='tag'>
-              <button class="btn default">Tag 1</button>
+              <button class="btn default">Bitcoin</button>
             </div>
 
           </div>
@@ -110,23 +106,23 @@ export default function Community() {
 
             <div class = "card-body">
               <div className='tag'>
-                <a href = "/profile" className='usernameLayout'>doraemon</a>
+                <a href = "/profile" className='usernameLayout'>John</a>
               </div>
               
               <div className='tag'>
-              <a href = "/profile" className='usernameLayout'>doraemon</a>
+              <a href = "/profile" className='usernameLayout'>Cena</a>
               </div>
 
               <div className='tag'>
-              <a href = "/profile" className='usernameLayout'>doraemon</a>
+              <a href = "/profile" className='usernameLayout'>Undertaker</a>
               </div>
 
               <div className='tag'>
-              <a href = "/profile" className='usernameLayout'>doraemon</a>
+              <a href = "/profile" className='usernameLayout'>Triple H</a>
               </div>
 
               <div className='tag'>
-              <a href = "/profile" className='usernameLayout'>doraemon</a>
+              <a href = "/profile" className='usernameLayout'>Shawn</a>
               </div>
 
             </div>

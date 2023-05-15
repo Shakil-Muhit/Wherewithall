@@ -179,9 +179,9 @@ class GetUsername(APIView):
     def get(self, request, format= None):
         username= request.GET.get('id')
         if username != None:
-            user = User.objects.filter(id=id)
+            user = User.objects.filter(id=int(username))
             if len(user) > 0:
-                return Response(ProfileSerializer(user[0].profile).data, status= status.HTTP_200_OK)
+                return Response( {'name' : user[0].username},status= status.HTTP_200_OK)
             return Response({'User Not Found': 'User does not exist'}, status= status.HTTP_404_NOT_FOUND)
         return Response({'Bad Request': 'Invalid parameters'}, status= status.HTTP_400_BAD_REQUEST)
         

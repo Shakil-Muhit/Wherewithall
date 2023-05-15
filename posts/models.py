@@ -21,6 +21,7 @@ class Reply(models.Model):
     comment= models.ForeignKey(Comment, on_delete=models.CASCADE)
     author= models.ForeignKey(User, on_delete=models.CASCADE)
     body= models.CharField(max_length=1000)
+    authorname= models.CharField(max_length=1000)
 
 class Tag(models.Model):
     post= models.ForeignKey(Post, on_delete= models.CASCADE)

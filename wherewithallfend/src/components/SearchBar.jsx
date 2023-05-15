@@ -13,7 +13,7 @@ export default function SearchBar() {
 
     const handleSearch = () => {
         console.log(searched)
-        navigate("/search")
+        navigate("/search", {state:{text:searched}})
     }
 
     return (

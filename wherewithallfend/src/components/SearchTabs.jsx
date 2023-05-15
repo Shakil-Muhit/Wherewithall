@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Post from './Post';
-
+import { Button } from '@mui/material';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -25,6 +25,7 @@ function TabPanel(props) {
   );
 }
 
+
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -32,8 +33,21 @@ function a11yProps(index) {
   };
 }
 
-export default function SearchTabs() {
+export default function SearchTabs(props) {
   const [value, setValue] = useState(0);
+
+  const handleFollow = () => {
+    const postRegisterData = {
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+  
+      body: JSON.stringify({
+        username: props.name,
+      })
+    };
+  
+    fetch("/api/users/followuser", postRegisterData).then((response) => response.json()).then((data) => console.log(data));
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -53,7 +67,15 @@ export default function SearchTabs() {
         <Post />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Users
+        <div>
+          <div style = {{float : "left"}}>
+              {props.name}
+          </div>
+        
+          <div style = {{float: "right"}}>
+          <Button variant="outlined" onClick = {handleFollow}>Follow</Button>
+          </div>
+        </div>
       </TabPanel>
     </Box>
   );

@@ -15,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model= Reply
-        fields= ('id', 'comment', 'body')
+        fields= ('id', 'comment', 'body', 'author', 'authorname')
 
 class AddPostSerializer(serializers.Serializer):
     body= serializers.CharField(max_length= 2000)

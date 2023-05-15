@@ -4,7 +4,7 @@ from . import views
 from .views import RegisterUserView, LoginUserView, LogoutUserView, GetProfile
 from .views import GetUserPosts, GetCurrentUser, GetCurrentUserPosts, GetCommunityPosts
 from .views import FollowUser, BanUserFromCommenting, BanUserFromPosting, UnbanUser, UnfollowUser
-from .views import GetCurrentUserVote, GetCurrentUserFollowing
+from .views import GetCurrentUserVote, GetCurrentUserFollowing, GetUsername
 
 urlpatterns= [
     path("createuser",RegisterUserView.as_view(),name="registeruser"),
@@ -22,6 +22,7 @@ urlpatterns= [
     path("banuserfromposting", BanUserFromPosting.as_view(), name="banuserfromposting"),
     path("banuserfromcommenting", BanUserFromCommenting.as_view(), name="banuserfromcommenting"),
     path("unbanuser", UnbanUser.as_view(), name="unbanuser"),
+    path("getusername", GetUsername.as_view(), name="getusername")
     # path("login_view",views.login,name="login"),
     # path("logout_view",views.logout,name="logout")
 ]
