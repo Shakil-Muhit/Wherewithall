@@ -25,14 +25,14 @@ class AddPostView(generics.CreateAPIView):
     def post(self, request, format= None):
         if not request.user.is_authenticated:
             return Response({'message': 'Not logged in'}, status= status.HTTP_400_BAD_REQUEST)
-        serializer= self.serializer_class(data= request.data)
-        if serializer.is_valid():
-            body= request.data.get('body')
-            post= Post(author= request.user, body= body)
-            post.save()
+        # serializer= self.serializer_class(data= request.data)
+        # if serializer.is_valid():
+        body= request.data.get('body')
+        post= Post(author= request.user, body= body)
+        post.save()
 
-            return Response(PostSerializer(post).data, status= status.HTTP_201_CREATED)
-        return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
+        return Response(PostSerializer(post).data, status= status.HTTP_201_CREATED)
+        # return Response({'message': 'invalid input'}, status= status.HTTP_400_BAD_REQUEST)
     
 class UpdatePostView(generics.CreateAPIView):
     serializer_class= AddPostSerializer
